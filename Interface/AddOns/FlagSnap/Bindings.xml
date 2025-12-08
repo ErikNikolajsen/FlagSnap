@@ -1,0 +1,5 @@
+<Bindings>
+    <Binding name="FLAGSNAP_TOGGLE" header="FLAGSNAP">
+        FlagSnapToggle()
+    </Binding>
+</Bindings>
