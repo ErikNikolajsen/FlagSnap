@@ -48,9 +48,9 @@ local function OnEventHandler()
 		flagDroppedAlliance = true
 	elseif string.find(arg1, "The Horde flag was dropped by") then
 		flagDroppedHorde = true
-	elseif string.find(arg1, "The Alliance Flag was returned to its base by") or string.find(arg1, "The Alliance Flag was picked up by") or string.find(arg1, "captured the Alliance flag!") then 
+	elseif string.find(arg1, "The Alliance Flag was returned to its base by") or string.find(arg1, "The Alliance Flag was picked up by") or string.find(arg1, "captured the Alliance flag!") or string.find(arg1, "The Alliance flag is now placed at its base.") then 
 		flagDroppedAlliance = false
-	elseif string.find(arg1, "The Horde flag was returned to its base by") or string.find(arg1, "The Horde flag was picked up by") or string.find(arg1, "captured the Horde flag!") then
+	elseif string.find(arg1, "The Horde flag was returned to its base by") or string.find(arg1, "The Horde flag was picked up by") or string.find(arg1, "captured the Horde flag!") or string.find(arg1, "The Horde flag is now placed at its base.") then
 		flagDroppedHorde = false
 	end
 	
@@ -123,15 +123,18 @@ end
 "The Alliance Flag was returned to its base by"
 "The Alliance Flag was picked up by"
 "captured the Alliance flag!"
+"The Alliance flag is now placed at its base."
 
 ## CHAT_MSG_BG_SYSTEM_HORDE:
 "The Horde flag was dropped by"
 "The Horde flag was returned to its base by"
 "The Horde flag was picked up by"
 "captured the Horde flag!"
+"The Horde flag is now placed at its base."
 
 ## CHAT_MSG_BG_SYSTEM_NEUTRAL:
 "Let the battle for Warsong Gulch begin!"
+"The flags are now placed at their bases."
 
 ## Bufftexture horde flag:
 Interface\\Icons\\INV_BannerPVP_01
