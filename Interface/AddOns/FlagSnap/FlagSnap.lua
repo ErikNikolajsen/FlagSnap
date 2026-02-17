@@ -10,6 +10,7 @@ local flagDroppedAlliance = false
 local flagDroppedHorde = false
 local flagSnapEngaged = false
 local flagSnapOn = true
+local flagSnapPrint = true
 
 local function DropFlag()
 	i=0
@@ -25,13 +26,17 @@ local function EngageFlagSnap()
 	f:SetScript("OnUpdate", function(self, delta)
 		UnitXP("interact", 1)
 	end)
-	DEFAULT_CHAT_FRAME:AddMessage("FlagSnap engaged", 1.0, 1.0, 0)
+	if flagSnapPrint == true then
+		DEFAULT_CHAT_FRAME:AddMessage("FlagSnap engaged", 1.0, 1.0, 0)
+	end
 	flagSnapEngaged = true
 end
 
 local function DisengageFlagSnap()
 	f:SetScript("OnUpdate", nil)
-	DEFAULT_CHAT_FRAME:AddMessage("FlagSnap disengaged", 1.0, 1.0, 0)
+	if flagSnapPrint == true then
+		DEFAULT_CHAT_FRAME:AddMessage("FlagSnap disengaged", 1.0, 1.0, 0)
+	end
 	flagSnapEngaged = false
 end
 
@@ -113,6 +118,15 @@ SlashCmdList["FLAGSNAP"] = function(msg)
 		flagSnapEngaged = false
 		flagSnapOn = true
 		DEFAULT_CHAT_FRAME:AddMessage("FlagSnap has been reset", 1.0, 1.0, 0)
+	-- toggles engagement prints
+	elseif cmd == "print" then
+		if arg == "on" or arg == "1" or arg == "true" then
+			DEFAULT_CHAT_FRAME:AddMessage("FlagSnap: print |cff00ff00on|r.", 1.0, 1.0, 0)
+			flagSnapPrint = true
+		elseif arg == "off" or arg == "0" or arg == "false" then
+			DEFAULT_CHAT_FRAME:AddMessage("FlagSnap: print |cffff0000off|r.", 1.0, 1.0, 0)
+			flagSnapPrint = false
+		end
 	-- prints commands
 	else
 		DEFAULT_CHAT_FRAME:AddMessage("FlagSnap commands:", 1.0, 1.0, 0)
@@ -120,6 +134,11 @@ SlashCmdList["FLAGSNAP"] = function(msg)
 			DEFAULT_CHAT_FRAME:AddMessage("/fs test [|cff00ff00on|r/off]", 1.0, 1.0, 0)
 		elseif flagSnapEngaged == false then
 			DEFAULT_CHAT_FRAME:AddMessage("/fs test [on/|cffff0000off|r]", 1.0, 1.0, 0)
+		end
+		if flagSnapPrint == true then
+			DEFAULT_CHAT_FRAME:AddMessage("/fs print [|cff00ff00on|r/off]", 1.0, 1.0, 0)
+		elseif flagSnapPrint == false then
+			DEFAULT_CHAT_FRAME:AddMessage("/fs print [on/|cffff0000off|r]", 1.0, 1.0, 0)
 		end
 		DEFAULT_CHAT_FRAME:AddMessage("/fs reset", 1.0, 1.0, 0)
 	end
