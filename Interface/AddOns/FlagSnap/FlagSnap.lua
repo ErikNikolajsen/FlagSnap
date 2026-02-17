@@ -78,7 +78,7 @@ end
 f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function()
     if event == "ADDON_LOADED" and arg1 == "FlagSnap" then
-        DEFAULT_CHAT_FRAME:AddMessage(string.format("FlagSnap v%s by %s.", GetAddOnMetadata("FlagSnap", "Version"), GetAddOnMetadata("FlagSnap", "Author")))
+        DEFAULT_CHAT_FRAME:AddMessage(string.format("|cffffff00FlagSnap v%s by %s|r", GetAddOnMetadata("FlagSnap", "Version"), GetAddOnMetadata("FlagSnap", "Author")))
         f:UnregisterEvent("ADDON_LOADED")
 		f:RegisterEvent("CHAT_MSG_BG_SYSTEM_ALLIANCE")
 		f:RegisterEvent("CHAT_MSG_BG_SYSTEM_HORDE")
@@ -87,31 +87,41 @@ f:SetScript("OnEvent", function()
 end)
 
 ------------------------------------------------------------
--- Slash command handler as redundancy to keybinds
+-- Slash command handler
 ------------------------------------------------------------
 SLASH_FLAGSNAP1 = "/fs"
+SLASH_FLAGSNAP2 = "/flagsnap"
 
 SlashCmdList["FLAGSNAP"] = function(msg)
-    local cmd, arg = string.match(msg, "^(%S*)%s*(.-)$")
+	local _, _, cmd, arg = string.find(msg, "^(%S*)%s*(.-)$")
     cmd = string.lower(cmd or "")
     arg = string.lower(arg or "")
 	
+	-- engage and disengage FlagSnap manually for testing
 	if cmd == "test" then
 		if arg == "on" or arg == "1" or arg == "true" then
+			DEFAULT_CHAT_FRAME:AddMessage("FlagSnap: test |cff00ff00on|r.", 1.0, 1.0, 0)
 			EngageFlagSnap()
-			DEFAULT_CHAT_FRAME:AddMessage("FlagSnap: test |cff00ff00engaged|r.")
 		elseif arg == "off" or arg == "0" or arg == "false" then
+			DEFAULT_CHAT_FRAME:AddMessage("FlagSnap: test |cffff0000off|r.", 1.0, 1.0, 0)
 			DisengageFlagSnap()
-			DEFAULT_CHAT_FRAME:AddMessage("FlagSnap: test |cffff0000disengaged|r.")
-		else
-			DEFAULT_CHAT_FRAME:AddMessage("Usage: /fs test [on/off]")
 		end
-	else 
+	-- reset the state of the game manually for testing
+	elseif cmd == "reset" then
+		flagDroppedAlliance = false
+		flagDroppedHorde = false
+		flagSnapEngaged = false
+		flagSnapOn = true
+		DEFAULT_CHAT_FRAME:AddMessage("FlagSnap has been reset", 1.0, 1.0, 0)
+	-- prints commands
+	else
+		DEFAULT_CHAT_FRAME:AddMessage("FlagSnap commands:", 1.0, 1.0, 0)
 		if flagSnapEngaged == true then
-			DEFAULT_CHAT_FRAME:AddMessage("/fs test [|cff00ff00on|r/off]")
+			DEFAULT_CHAT_FRAME:AddMessage("/fs test [|cff00ff00on|r/off]", 1.0, 1.0, 0)
 		elseif flagSnapEngaged == false then
-			DEFAULT_CHAT_FRAME:AddMessage("/fs test [on/|cffff0000off|r]")
-		end	
+			DEFAULT_CHAT_FRAME:AddMessage("/fs test [on/|cffff0000off|r]", 1.0, 1.0, 0)
+		end
+		DEFAULT_CHAT_FRAME:AddMessage("/fs reset", 1.0, 1.0, 0)
 	end
 end
 
