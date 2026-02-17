@@ -10,7 +10,14 @@ local flagDroppedAlliance = false
 local flagDroppedHorde = false
 local flagSnapEngaged = false
 local flagSnapOn = true
-local flagSnapPrint = true
+local flagSnapPrint = false
+
+local function ResetState()
+	flagDroppedAlliance = false
+	flagDroppedHorde = false
+	flagSnapEngaged = false
+	flagSnapOn = true
+end
 
 local function DropFlag()
 	i=0
@@ -49,7 +56,12 @@ local function CheckEngagementConditions()
 end
 
 local function OnEventHandler()
-	if string.find(arg1, "The Alliance Flag was dropped by") then
+	if event == "PLAYER_ENTERING_WORLD" then
+		flagDroppedAlliance = false
+		flagDroppedHorde = false
+		flagSnapEngaged = false
+		flagSnapOn = true
+	elseif string.find(arg1, "The Alliance Flag was dropped by") then
 		flagDroppedAlliance = true
 	elseif string.find(arg1, "The Horde flag was dropped by") then
 		flagDroppedHorde = true
@@ -87,6 +99,7 @@ f:SetScript("OnEvent", function()
         f:UnregisterEvent("ADDON_LOADED")
 		f:RegisterEvent("CHAT_MSG_BG_SYSTEM_ALLIANCE")
 		f:RegisterEvent("CHAT_MSG_BG_SYSTEM_HORDE")
+		f:RegisterEvent("PLAYER_ENTERING_WORLD")
         f:SetScript("OnEvent", OnEventHandler)
     end
 end)
@@ -111,13 +124,6 @@ SlashCmdList["FLAGSNAP"] = function(msg)
 			DEFAULT_CHAT_FRAME:AddMessage("FlagSnap: test |cffff0000off|r.", 1.0, 1.0, 0)
 			DisengageFlagSnap()
 		end
-	-- reset the state of the game manually for testing
-	elseif cmd == "reset" then
-		flagDroppedAlliance = false
-		flagDroppedHorde = false
-		flagSnapEngaged = false
-		flagSnapOn = true
-		DEFAULT_CHAT_FRAME:AddMessage("FlagSnap has been reset", 1.0, 1.0, 0)
 	-- toggles engagement prints
 	elseif cmd == "print" then
 		if arg == "on" or arg == "1" or arg == "true" then
@@ -140,7 +146,6 @@ SlashCmdList["FLAGSNAP"] = function(msg)
 		elseif flagSnapPrint == false then
 			DEFAULT_CHAT_FRAME:AddMessage("/fs print [on/|cffff0000off|r]", 1.0, 1.0, 0)
 		end
-		DEFAULT_CHAT_FRAME:AddMessage("/fs reset", 1.0, 1.0, 0)
 	end
 end
 

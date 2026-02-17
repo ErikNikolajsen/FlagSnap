@@ -2,7 +2,7 @@
 ## Title: FlagSnap
 ## Notes: An addon for automatic and reliable flag pickup in WSG
 ## Author: Erik Nikolajsen
-## Version: 1.0.1
+## Version: 1.0.2
 
 FlagSnap.lua
 Bindings.xml
